@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat - StudySync</title>
+    <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">StudyMate</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="group-management.html">Groups</a></li>
+            <li><a href="meeting-scheduler.html">Meetings</a></li>
+            <li><a href="notes-sharing.html">Notes</a></li>
+            <li><a href="group-chat.html" class="active">Chat</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Group <span>Chat</span></h1>
+        <p>Communicate with your study group in real time.</p>
+    </header>
+
+    <section class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <div class="message received">
+                <p><strong>Alice:</strong> Hey, when is the next meeting?</p>
+            </div>
+            <div class="message sent">
+                <p><strong>You:</strong> It’s tomorrow at 5 PM.</p>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </section>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById("message-input");
+            const messageText = input.value.trim();
+
+            if (messageText !== "") {
+                const chatBox = document.getElementById("chat-box");
+
+                // Create a new message bubble
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("message", "sent");
+                messageDiv.innerHTML = `<p><strong>You:</strong> ${messageText}</p>`;
+                chatBox.appendChild(messageDiv);
+
+                // Auto-scroll to the latest message
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Clear input field
+                input.value = "";
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+
+</body>
+</html>
