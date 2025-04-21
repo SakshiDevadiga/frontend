@@ -21,20 +21,61 @@
     <header>
         <h1>Manage Your <span>Study Groups</span></h1>
         <p>Create and organize study groups easily.</p>
-        <button class="create-group">+ Create Group</button>
+        <button class="create-group" onclick="document.getElementById('groupForm').style.display='block'">+ Create Group</button>
     </header>
 
-    <section class="group-list">
+    <!-- Create Group Form -->
+    <section id="groupForm" style="display:none; padding: 20px;">
+        <h2>Create New Group</h2>
+        <form id="newGroupForm">
+            <input type="text" id="groupName" placeholder="Group Name" required><br><br>
+            <input type="number" id="groupMembers" placeholder="Initial Members Count" min="1" required><br><br>
+            <button type="submit">Create</button>
+        </form>
+    </section>
+
+    <!-- Group List -->
+    <section class="group-list" id="groupList">
         <div class="group">
             <h3>Mathematics Study Group</h3>
             <p>Members: 10 | Active</p>
-            <button class="join-btn">Join</button>
+            <button class="join-btn" onclick="addMember(this)">Join</button>
         </div>
         <div class="group">
             <h3>Science Study Hub</h3>
             <p>Members: 8 | Active</p>
-            <button class="join-btn">Join</button>
+            <button class="join-btn" onclick="addMember(this)">Join</button>
         </div>
     </section>
+
+    <script>
+        const form = document.getElementById('newGroupForm');
+        const groupList = document.getElementById('groupList');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const groupName = document.getElementById('groupName').value;
+            const membersCount = parseInt(document.getElementById('groupMembers').value);
+
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'group';
+            groupDiv.innerHTML = `
+                <h3>${groupName}</h3>
+                <p>Members: <span class="member-count">${membersCount}</span> | Active</p>
+                <button class="join-btn" onclick="addMember(this)">Join</button>
+            `;
+            groupList.appendChild(groupDiv);
+            form.reset();
+            document.getElementById('groupForm').style.display = 'none';
+        });
+
+        function addMember(button) {
+            const memberCountSpan = button.parentElement.querySelector('.member-count');
+            let currentCount = parseInt(memberCountSpan.textContent);
+            memberCountSpan.textContent = currentCount + 1;
+            alert("You have joined the group!");
+        }
+    </script>
 </body>
 </html>

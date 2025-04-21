@@ -21,10 +21,20 @@
     <header>
         <h1>Share and Access <span>Study Notes</span></h1>
         <p>Upload and download materials easily.</p>
-        <button class="upload-btn">+ Upload Notes</button>
+        <button class="upload-btn" onclick="document.getElementById('upload-form').style.display='block'">+ Upload Notes</button>
     </header>
 
-    <section class="notes">
+    <!-- Upload Form (Initially Hidden) -->
+    <section id="upload-form" style="display:none; padding: 20px;">
+        <h2>Upload Your Notes</h2>
+        <form id="notesForm">
+            <input type="text" id="noteTitle" placeholder="Note Title" required><br><br>
+            <input type="file" id="noteFile" accept=".pdf,.docx,.pptx" required><br><br>
+            <button type="submit">Share Note</button>
+        </form>
+    </section>
+
+    <section class="notes" id="notesList">
         <div class="note">
             <h3>Biology - Cell Structure</h3>
             <p>📄 PDF | 📅 Uploaded: 19 Feb</p>
@@ -36,5 +46,32 @@
             <button class="download-btn">Download</button>
         </div>
     </section>
+
+    <script>
+        const form = document.getElementById('notesForm');
+        const notesList = document.getElementById('notesList');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('noteTitle').value;
+            const fileInput = document.getElementById('noteFile');
+            const fileName = fileInput.files[0]?.name || "Untitled";
+
+            const today = new Date();
+            const dateStr = `${today.getDate()} ${today.toLocaleString('default', { month: 'short' })}`;
+
+            const newNote = document.createElement('div');
+            newNote.className = 'note';
+            newNote.innerHTML = `
+                <h3>${title}</h3>
+                <p>📄 ${fileName.split('.').pop().toUpperCase()} | 📅 Uploaded: ${dateStr}</p>
+                <button class="download-btn">Download</button>
+            `;
+            notesList.prepend(newNote);
+            form.reset();
+            document.getElementById('upload-form').style.display = 'none';
+        });
+    </script>
 </body>
 </html>
