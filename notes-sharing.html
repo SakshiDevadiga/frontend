@@ -5,6 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes Sharing - StudySync</title>
     <link rel="stylesheet" href="other.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+        }
+        header {
+            text-align: center;
+            padding: 40px;
+            background-color: #f0f0f0;
+        }
+        .upload-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        section.notes {
+            padding: 20px;
+        }
+        .note {
+            background-color: #e8e8e8;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+        .download-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -35,15 +89,20 @@
     </section>
 
     <section class="notes" id="notesList">
+        <!-- Example Notes -->
         <div class="note">
             <h3>Biology - Cell Structure</h3>
             <p>📄 PDF | 📅 Uploaded: 19 Feb</p>
-            <button class="download-btn">Download</button>
+            <a href="notes/sample-biology.pdf" download>
+                <button class="download-btn">Download</button>
+            </a>
         </div>
         <div class="note">
             <h3>Calculus Formulas</h3>
             <p>📄 PDF | 📅 Uploaded: 18 Feb</p>
-            <button class="download-btn">Download</button>
+            <a href="notes/sample-calculus.pdf" download>
+                <button class="download-btn">Download</button>
+            </a>
         </div>
     </section>
 
@@ -56,7 +115,12 @@
 
             const title = document.getElementById('noteTitle').value;
             const fileInput = document.getElementById('noteFile');
-            const fileName = fileInput.files[0]?.name || "Untitled";
+            const file = fileInput.files[0];
+
+            if (!file) return;
+
+            const fileName = file.name;
+            const fileURL = URL.createObjectURL(file);
 
             const today = new Date();
             const dateStr = `${today.getDate()} ${today.toLocaleString('default', { month: 'short' })}`;
@@ -66,8 +130,11 @@
             newNote.innerHTML = `
                 <h3>${title}</h3>
                 <p>📄 ${fileName.split('.').pop().toUpperCase()} | 📅 Uploaded: ${dateStr}</p>
-                <button class="download-btn">Download</button>
+                <a href="${fileURL}" download="${fileName}">
+                    <button class="download-btn">Download</button>
+                </a>
             `;
+
             notesList.prepend(newNote);
             form.reset();
             document.getElementById('upload-form').style.display = 'none';
